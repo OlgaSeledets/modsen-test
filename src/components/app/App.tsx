@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
 
 const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes";
@@ -10,26 +10,35 @@ interface Response {
   totalItems: number;
 }
 
-function App() {
-  let data: Response = {
-    items: [],
-    kind: "",
-    totalItems: 0,
-  };
-  fetch(`${BOOKS_API_BASE_URL}?q=JS&key=${KEY}&maxResults=30`).then((x) =>
-    x.json().then((x) => (data = x))
+async function getBooks() {
+  const response = await fetch(
+    `${BOOKS_API_BASE_URL}?q=JS&key=${KEY}&maxResults=30`
   );
+  return await response.json();
+}
 
+function App() {
+  const [books, setBooks] = useState<Response>()
+  const getData = useCallback(async () => {
+    const data = await getBooks()
+    setBooks(data)
+    console.log(data)
+  }, [])
+
+  useEffect(() => {
+    getData()
+  }, [])
+  
   return (
     <div className="App">
       <>
-        {data.items.map((x) => {
-          <div key={x.volumeInfo?.title}>
+        {books?.items.map((x) => 
+          <div key={x.id}>
             <div>{x.volumeInfo?.title}</div>
             <div>{x.volumeInfo?.authors[0]}</div>
             <img src={x.volumeInfo?.imageLinks?.smallThumbnail}></img>
-          </div>;
-        })}
+          </div>
+        )}
       </>
     </div>
   );
