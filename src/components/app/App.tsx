@@ -35,7 +35,6 @@ function App() {
         <div className="container header-container">
           <img className="logo" src="img/logo.svg" alt="logo"></img>
           <h1 className="title">MODSEN TEST</h1>
-          {/* <span className="spacer"></span> */}
           <div className="search">
             <select className="search__select" name="categories" id="categories-select">
               <option value="all">all</option>
