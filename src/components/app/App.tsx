@@ -33,10 +33,13 @@ function App() {
     <div className="App">
       <>
         {books?.items.map((x) => 
-          <div key={x.id}>
-            <div>{x.volumeInfo?.title}</div>
-            <div>{x.volumeInfo?.authors[0]}</div>
-            <img src={x.volumeInfo?.imageLinks?.smallThumbnail}></img>
+          <div className="card" key={x.id}>
+            <img className="card__img" src={x.volumeInfo?.imageLinks?.smallThumbnail} alt="cover"></img>
+            <div className="card__text">
+              <p className="card__text-categories">{x.volumeInfo?.categories}</p>
+              <p className="card__text-title">{x.volumeInfo?.title}</p>
+              <p className="card__text-author">{x.volumeInfo?.authors[0]}</p>
+            </div>
           </div>
         )}
       </>

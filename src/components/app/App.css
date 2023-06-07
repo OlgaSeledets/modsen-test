@@ -1,3 +1,47 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: Belgrano;
+}
+
+.card {
+  width: 225px;
+  height: 300px;
+  border-radius: 10px;
+  position: relative;
+  background: #4A4E69;
+}
+
+.card__img {
+  width: 225px;
+  height: 300px;
+  border-radius: 10px;
+}
+
+.card__text {
+  width: 225px;
+  min-height: 104px;
+  background: rgba(34, 34, 59, 0.7);
+  color: #F2E9E4;
+  border-radius: 0px 0px 10px 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  padding: 10px;
+}
+
+.card__text-categories {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.card__text-title {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.card__text-author {
+  font-size: 14px;
 }
