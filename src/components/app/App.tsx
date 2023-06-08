@@ -36,7 +36,7 @@ function App() {
           <img className="logo" src="img/logo.svg" alt="logo"></img>
           <h1 className="title">MODSEN TEST</h1>
           <div className="search">
-            <select className="search__select" name="categories" id="categories-select">
+            <select className="search__select select" name="categories" id="categories-select">
               <option value="all">all</option>
               <option value="art">art</option>
               <option value="biography">biography</option>
@@ -51,6 +51,13 @@ function App() {
         </div>
       </header>
       <div className="container">
+        <div className="sorting">
+          <div className="sorting__found-count">{books?.totalItems} results for ...</div>
+          <select className="sorting__select select" name="sort" id="sort-select">
+            <option value="relevance">relevance</option>
+            <option value="newest">newest</option>
+          </select>
+        </div>
         <div className="cards">
           {books?.items.map((x) => 
             <div className="card" key={x.id}>
