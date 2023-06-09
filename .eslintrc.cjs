@@ -8,7 +8,6 @@ module.exports = {
   extends: ["plugin:@typescript-eslint/recommended"],
   rules: {
     indent: ["error", 2, { SwitchCase: 1 }],
-    quotes: ["error", "single"],
     semi: ["error", "never"],
     "prefer-const": "error",
     "no-trailing-spaces": "error",
