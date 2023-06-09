@@ -1,20 +1,26 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import './App.css'
+import React, { useCallback, useEffect, useState } from "react"
+import "./App.css"
+import Card from "../card/Card"
+import { Volume } from "../../Types"
 
-const BOOKS_API_BASE_URL = 'https://www.googleapis.com/books/v1/volumes'
-const KEY = 'AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY'
+const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
+const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
 
-type Book = {
+export type Book = {
   title: string
+  authors: Array<string>
+  categories: Array<string>
+  imageLink: string
+  description: string
 }
 
 type Response = {
-  items: Array<any>
+  items: Array<Volume>
   kind: string
   totalItems: number
 }
 
-async function getBooks(): Promise<any> {
+async function getBooks(): Promise<Response> {
   const response = await fetch(
     `${BOOKS_API_BASE_URL}?q=JS&key=${KEY}&maxResults=30`
   )
@@ -26,7 +32,6 @@ function App(): JSX.Element {
   const getData = useCallback(async () => {
     const data = await getBooks()
     setBooks(data)
-    console.log(data)
   }, [])
 
   useEffect(() => {
@@ -75,25 +80,19 @@ function App(): JSX.Element {
           </select>
         </div>
         <div className="cards">
-          {books?.items.map((x) => (
-            <div className="card" key={x.id}>
-              <img
-                className="card__img"
-                src={x.volumeInfo?.imageLinks?.thumbnail}
-                alt="cover"
-              ></img>
-              <div className="card__text">
-                <div className="card__text-categories">
-                  {x.volumeInfo?.categories}
-                </div>
-                <div className="spacer"></div>
-                <div className="card__text-title">{x.volumeInfo?.title}</div>
-                <div className="card__text-author">
-                  {x.volumeInfo?.authors[0]}
-                </div>
-              </div>
-            </div>
-          ))}
+          {books?.items.map((x) => {
+            const info = x.volumeInfo
+            return info ? (<Card
+              key={x.id ?? ''}
+              book={{
+                title: info?.title ?? '',
+                authors: info?.authors ?? [],
+                categories: info?.categories ?? [],
+                imageLink: info?.imageLinks?.thumbnail ?? 'img/logo.svg',
+                description: info?.description ?? '',
+              }}
+            />) : undefined
+          })}
         </div>
       </div>
     </>
