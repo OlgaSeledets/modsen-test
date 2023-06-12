@@ -88,3 +88,53 @@
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
+
+.details-view {
+  margin-top: 100px;
+  display: flex;
+}
+
+.img-container {
+  width: 17rem;
+  margin-right: 3rem;
+  margin-bottom: 1rem;
+}
+
+.book__img {
+  width: 17rem;
+  height: 23rem;
+}
+
+.description__text {
+  max-width: 70rem;
+  min-width: 17rem;
+}
+
+.description__text-categories {
+  margin-bottom: 0.5rem;
+}
+
+.description__text-title {
+  font-size: 22px;
+  margin-bottom: 0.5rem;
+}
+
+.description__text-authors {
+  margin-bottom: 1.5rem;
+}
+
+.description__text-description {
+  text-align: justify;
+  font-size: 18px;
+}
+
+@media (max-width: 664px) {
+  .details-view {
+    display: block;
+  }
+
+  .img-container {
+    width: 100%;
+    text-align: center;
+  }
+}

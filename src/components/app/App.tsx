@@ -94,6 +94,17 @@ function App(): JSX.Element {
             />) : undefined
           })}
         </div>
+        <div className="details-view">
+          <div className="img-container">
+            <img className="book__img" src={books?.items[0]?.volumeInfo?.imageLinks?.thumbnail}></img>
+          </div>
+          <div className="description__text">
+            <div className="description__text-categories">{books?.items[0].volumeInfo?.categories}</div>
+            <div className="description__text-title">{books?.items[0].volumeInfo?.title}</div>
+            <div className="description__text-authors">{books?.items[0].volumeInfo?.authors}</div>
+            <div className="description__text-description">{books?.items[0].volumeInfo?.description}</div>
+          </div>
+        </div>
       </div>
     </>
   )
