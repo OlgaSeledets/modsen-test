@@ -20,11 +20,16 @@ type Response = {
   totalItems: number
 }
 
+type Category = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
+
 type Status = 'idle' | 'searching' | 'found'
 
-async function getBooks(search: string): Promise<Response> {
+type OrderBy = 'newest' | 'relevance'
+
+async function getBooks(search: string, category: Category, orderBy: OrderBy): Promise<Response> {
+  const cat = category === 'all' ? '' : `+subject:${category}`
   const response = await fetch(
-    `${BOOKS_API_BASE_URL}?q=${search}&key=${KEY}&maxResults=30`
+    `${BOOKS_API_BASE_URL}?q=${search}${cat}&orderBy=${orderBy}&key=${KEY}&maxResults=10`
   )
   return await response.json()
 }
@@ -33,18 +38,19 @@ function App(): JSX.Element {
   const [books, setBooks] = useState<Response>()
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState<Status>('idle')
-  const getData = useCallback(async (search: string) => {
-    const data = await getBooks(search)
-    setBooks(data)
-    setStatus('found')
-  }, [])
-
+  const [category, setCategory] = useState<Category>('all')
+  const [orderBy, setOrderBy] = useState<OrderBy>('relevance')
+  const getData = useCallback(
+    async (search: string, category: Category, orderBy: OrderBy) => {
+      const data = await getBooks(search, category, orderBy)
+      setBooks(data)
+      setStatus('found')
+    }, [])
   useEffect(() => {
     if (status === 'searching') {
-      void getData(search)
+      void getData(search, category, orderBy)
     }
   }, [status])
-
   return (
     <>
       <header className="header">
@@ -54,8 +60,7 @@ function App(): JSX.Element {
           <div className="search">
             <select
               className="search__select select-common"
-              name="categories"
-              id="categories-select"
+              onChange={e => setCategory(e.target.value as Category)}
             >
               <option value="all">all</option>
               <option value="art">art</option>
@@ -73,7 +78,11 @@ function App(): JSX.Element {
             ></input>
             <button
               className="lnr lnr-magnifier search__btn"
-              onClick={e => setStatus('searching')}
+              onClick={e => {
+                if (search !== '') {
+                  setStatus('searching')
+                }
+              }}
             ></button>
           </div>
         </div>
@@ -83,8 +92,12 @@ function App(): JSX.Element {
           <div>{books?.totalItems} results for ...</div>
           <select
             className="subheader__select select-common"
-            name="sort"
-            id="sort-select"
+            onChange={e => {
+              setOrderBy(e.target.value as OrderBy)
+              if (search !== '') {
+                setStatus('searching')
+              }
+            }}
           >
             <option value="relevance">relevance</option>
             <option value="newest">newest</option>
@@ -94,7 +107,7 @@ function App(): JSX.Element {
           {books?.items.map((x) => {
             const info = x.volumeInfo
             return info ? (<Card
-              key={x.id ?? ''}
+              key={x.etag ?? ''}
               book={{
                 title: info?.title ?? '',
                 authors: info?.authors ?? [],
