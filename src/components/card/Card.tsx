@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import './Card.css'
 import { Book } from '../app/App'
 
-type CardProps = { key: string; book: Book };
+type CardProps = { book: Book };
 
 function Card(props: CardProps): JSX.Element {
   const book = props.book
   const category = book.categories[0] ?? ''
   return (
-    <div className="card" key={props.key}>
+    <div className="card">
       <img
         className="card__img"
         src={book.imageLink}
