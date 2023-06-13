@@ -20,23 +20,30 @@ type Response = {
   totalItems: number
 }
 
-async function getBooks(): Promise<Response> {
+type Status = 'idle' | 'searching' | 'found'
+
+async function getBooks(search: string): Promise<Response> {
   const response = await fetch(
-    `${BOOKS_API_BASE_URL}?q=JS&key=${KEY}&maxResults=30`
+    `${BOOKS_API_BASE_URL}?q=${search}&key=${KEY}&maxResults=30`
   )
   return await response.json()
 }
 
 function App(): JSX.Element {
   const [books, setBooks] = useState<Response>()
-  const getData = useCallback(async () => {
-    const data = await getBooks()
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState<Status>('idle')
+  const getData = useCallback(async (search: string) => {
+    const data = await getBooks(search)
     setBooks(data)
+    setStatus('found')
   }, [])
 
   useEffect(() => {
-    void getData()
-  }, [])
+    if (status === 'searching') {
+      void getData(search)
+    }
+  }, [status])
 
   return (
     <>
@@ -62,8 +69,12 @@ function App(): JSX.Element {
               className="search__input"
               type="text"
               placeholder="Enter the name of the book"
+              onChange={e => setSearch(e.target.value)}
             ></input>
-            <button className="lnr lnr-magnifier search__btn"></button>
+            <button
+              className="lnr lnr-magnifier search__btn"
+              onClick={e => setStatus('searching')}
+            ></button>
           </div>
         </div>
       </header>
