@@ -105,6 +105,10 @@
 .book__img {
   width: 17rem;
   height: 23rem;
+  border-radius: 0.5rem;
+  background-color: #4A4E69;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  box-shadow: -4px 4px 10px 0px rgba(0, 0, 0, 0.75);
 }
 
 .description__text {
