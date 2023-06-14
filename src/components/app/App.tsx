@@ -76,14 +76,22 @@ function App(): JSX.Element {
               type="text"
               placeholder="Enter book name"
               onChange={e => setSearch(e.target.value)}
+              onKeyDown={event => {
+                if (event.key === 'Enter') {
+                  if (search !== '') {
+                    setStatus('searching')
+                    setBookName(search)
+                  }
+                }
+              }}
             ></input>
             <button
               className="lnr lnr-magnifier search__btn"
               onClick={e => {
                 if (search !== '') {
                   setStatus('searching')
+                  setBookName(search)
                 }
-                setBookName(search)
               }}
             ></button>
           </div>
