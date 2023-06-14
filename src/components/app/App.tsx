@@ -29,7 +29,7 @@ type OrderBy = 'newest' | 'relevance'
 async function getBooks(search: string, category: Category, orderBy: OrderBy): Promise<Response> {
   const cat = category === 'all' ? '' : `+subject:${category}`
   const response = await fetch(
-    `${BOOKS_API_BASE_URL}?q=${search}${cat}&orderBy=${orderBy}&key=${KEY}&maxResults=10`
+    `${BOOKS_API_BASE_URL}?q=${search}${cat}&orderBy=${orderBy}&key=${KEY}&maxResults=30`
   )
   return await response.json()
 }
@@ -56,17 +56,20 @@ function App(): JSX.Element {
   let view
   if (selectedCardIndex !== -1) {
     view = (
-      <div className="details-view">
-        <div className="img-container">
-          <img className="book__img" src={books?.items[selectedCardIndex]?.volumeInfo?.imageLinks?.thumbnail}></img>
+      <>
+        <button className="back" onClick={e => setSelectedCardIndex(-1)}>Back</button>
+        <div className="details-view">
+          <div className="img-container">
+            <img className="book__img" src={books?.items[selectedCardIndex]?.volumeInfo?.imageLinks?.thumbnail}></img>
+          </div>
+          <div className="description__text">
+            <div className="description__text-categories">{books?.items[selectedCardIndex].volumeInfo?.categories}</div>
+            <div className="description__text-title">{books?.items[selectedCardIndex].volumeInfo?.title}</div>
+            <div className="description__text-authors">{books?.items[selectedCardIndex].volumeInfo?.authors}</div>
+            <div className="description__text-description">{books?.items[selectedCardIndex].volumeInfo?.description}</div>
+          </div>
         </div>
-        <div className="description__text">
-          <div className="description__text-categories">{books?.items[selectedCardIndex].volumeInfo?.categories}</div>
-          <div className="description__text-title">{books?.items[selectedCardIndex].volumeInfo?.title}</div>
-          <div className="description__text-authors">{books?.items[selectedCardIndex].volumeInfo?.authors}</div>
-          <div className="description__text-description">{books?.items[selectedCardIndex].volumeInfo?.description}</div>
-        </div>
-      </div>
+      </>
     )
   }
   else {
