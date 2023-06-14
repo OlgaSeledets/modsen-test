@@ -22,7 +22,7 @@ type Response = {
 
 type Category = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
 
-type Status = 'idle' | 'searching' | 'found'
+type Status = 'idle' | 'searching' | 'results-received'
 
 type OrderBy = 'newest' | 'relevance'
 
@@ -45,7 +45,7 @@ function App(): JSX.Element {
     async (search: string, category: Category, orderBy: OrderBy) => {
       const data = await getBooks(search, category, orderBy)
       setBooks(data)
-      setStatus('found')
+      setStatus('results-received')
     }, [])
   useEffect(() => {
     if (status === 'searching') {
@@ -99,7 +99,8 @@ function App(): JSX.Element {
       </header>
       <div className="container">
         <div className="subheader">
-          <div>{books?.totalItems} results for {bookName}</div>
+          {status === 'results-received' && <div>{books?.totalItems} results for {bookName}</div>}
+          <span className="spacer"></span>
           <select
             className="subheader__select select-common"
             onChange={e => {
