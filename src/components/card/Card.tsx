@@ -1,7 +1,7 @@
 import './Card.css'
 import { Book } from '../app/App'
 
-type CardProps = {index: number, book: Book };
+type CardProps = { index: number, book: Book };
 
 function Card(props: CardProps): JSX.Element {
   const book = props.book
