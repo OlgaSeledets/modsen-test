@@ -40,6 +40,7 @@ function App(): JSX.Element {
   const [status, setStatus] = useState<Status>('idle')
   const [category, setCategory] = useState<Category>('all')
   const [orderBy, setOrderBy] = useState<OrderBy>('relevance')
+  const [bookName, setBookName] = useState('')
   const getData = useCallback(
     async (search: string, category: Category, orderBy: OrderBy) => {
       const data = await getBooks(search, category, orderBy)
@@ -73,7 +74,7 @@ function App(): JSX.Element {
             <input
               className="search__input"
               type="text"
-              placeholder="Enter the name of the book"
+              placeholder="Enter book name"
               onChange={e => setSearch(e.target.value)}
             ></input>
             <button
@@ -82,6 +83,7 @@ function App(): JSX.Element {
                 if (search !== '') {
                   setStatus('searching')
                 }
+                setBookName(search)
               }}
             ></button>
           </div>
@@ -89,7 +91,7 @@ function App(): JSX.Element {
       </header>
       <div className="container">
         <div className="subheader">
-          <div>{books?.totalItems} results for ...</div>
+          <div>{books?.totalItems} results for {bookName}</div>
           <select
             className="subheader__select select-common"
             onChange={e => {

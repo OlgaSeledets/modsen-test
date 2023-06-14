@@ -49,6 +49,7 @@
   color: #444;
   font-size: smaller;
   outline: none;
+  cursor: pointer;
 }
 
 .search__select {
@@ -75,6 +76,7 @@
   border-left: 1px solid rgba(127, 127, 127, 0.5);
   vertical-align: middle;
   cursor: pointer;
+  background-color: #fff;
 }
 
 .subheader {
