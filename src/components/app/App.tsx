@@ -41,6 +41,7 @@ function App(): JSX.Element {
   const [category, setCategory] = useState<Category>('all')
   const [orderBy, setOrderBy] = useState<OrderBy>('relevance')
   const [bookName, setBookName] = useState('')
+  const [selectedCardIndex, setSelectedCardIndex] = useState(-1)
   const getData = useCallback(
     async (search: string, category: Category, orderBy: OrderBy) => {
       const data = await getBooks(search, category, orderBy)
@@ -52,6 +53,65 @@ function App(): JSX.Element {
       void getData(search, category, orderBy)
     }
   }, [status])
+  let view
+  if (selectedCardIndex !== -1) {
+    view = (
+      <div className="details-view">
+        <div className="img-container">
+          <img className="book__img" src={books?.items[selectedCardIndex]?.volumeInfo?.imageLinks?.thumbnail}></img>
+        </div>
+        <div className="description__text">
+          <div className="description__text-categories">{books?.items[selectedCardIndex].volumeInfo?.categories}</div>
+          <div className="description__text-title">{books?.items[selectedCardIndex].volumeInfo?.title}</div>
+          <div className="description__text-authors">{books?.items[selectedCardIndex].volumeInfo?.authors}</div>
+          <div className="description__text-description">{books?.items[selectedCardIndex].volumeInfo?.description}</div>
+        </div>
+      </div>
+    )
+  }
+  else {
+    view = (
+      <>
+        <div className="subheader">
+          {status === 'results-received' && <div>{books?.totalItems} results for {bookName}</div>}
+          <span className="spacer"></span>
+          <select
+            className="subheader__select select-common"
+            onChange={e => {
+              setOrderBy(e.target.value as OrderBy)
+              if (search !== '') {
+                setStatus('searching')
+              }
+            }}
+          >
+            <option value="relevance">relevance</option>
+            <option value="newest">newest</option>
+          </select>
+        </div>
+        <div className="cards" onClick={e => {
+          const index = Number.parseInt((e.target as HTMLElement).id)
+          if (!Number.isNaN(index)) {
+            setSelectedCardIndex(index)
+          }
+        }}>
+          {books?.items.map((x, i) => {
+            const info = x.volumeInfo
+            return info ? (<Card
+              index={i}
+              key={x.etag ?? ''}
+              book={{
+                title: info?.title ?? '',
+                authors: info?.authors ?? [],
+                categories: info?.categories ?? [],
+                imageLink: info?.imageLinks?.thumbnail ?? 'img/logo.svg',
+                description: info?.description ?? '',
+              }}
+            />) : undefined
+          })}
+        </div>
+      </>
+    )
+  }
   return (
     <>
       <header className="header">
@@ -91,6 +151,7 @@ function App(): JSX.Element {
                 if (search !== '') {
                   setStatus('searching')
                   setBookName(search)
+                  setSelectedCardIndex(-1)
                 }
               }}
             ></button>
@@ -98,48 +159,7 @@ function App(): JSX.Element {
         </div>
       </header>
       <div className="container">
-        <div className="subheader">
-          {status === 'results-received' && <div>{books?.totalItems} results for {bookName}</div>}
-          <span className="spacer"></span>
-          <select
-            className="subheader__select select-common"
-            onChange={e => {
-              setOrderBy(e.target.value as OrderBy)
-              if (search !== '') {
-                setStatus('searching')
-              }
-            }}
-          >
-            <option value="relevance">relevance</option>
-            <option value="newest">newest</option>
-          </select>
-        </div>
-        <div className="cards">
-          {books?.items.map((x) => {
-            const info = x.volumeInfo
-            return info ? (<Card
-              key={x.etag ?? ''}
-              book={{
-                title: info?.title ?? '',
-                authors: info?.authors ?? [],
-                categories: info?.categories ?? [],
-                imageLink: info?.imageLinks?.thumbnail ?? 'img/logo.svg',
-                description: info?.description ?? '',
-              }}
-            />) : undefined
-          })}
-        </div>
-        <div className="details-view">
-          <div className="img-container">
-            <img className="book__img" src={books?.items[0]?.volumeInfo?.imageLinks?.thumbnail}></img>
-          </div>
-          <div className="description__text">
-            <div className="description__text-categories">{books?.items[0].volumeInfo?.categories}</div>
-            <div className="description__text-title">{books?.items[0].volumeInfo?.title}</div>
-            <div className="description__text-authors">{books?.items[0].volumeInfo?.authors}</div>
-            <div className="description__text-description">{books?.items[0].volumeInfo?.description}</div>
-          </div>
-        </div>
+        {view}
       </div>
     </>
   )

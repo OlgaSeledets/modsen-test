@@ -57,3 +57,7 @@
   .spacer {
     flex-grow: 1;
   }
+
+  .nonclickable {
+    pointer-events: none;
+  }
