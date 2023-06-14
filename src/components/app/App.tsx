@@ -3,6 +3,7 @@ import "./App.css"
 import Card from "../card/Card"
 import { Volume } from "../../Types"
 import Header from "../header/Header"
+import DetailsView from "../details-view/DetailsView"
 
 const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
@@ -72,29 +73,30 @@ function App(): JSX.Element {
       setBooks(data)
       setStatus('results-received')
     }, [])
+
   useEffect(() => {
     if (status === 'searching') {
       void getData(search, category, orderBy)
     }
   }, [status])
+
   let view
   if (selectedCardIndex !== -1) {
-    view = (
-      <>
-        <button className="back" onClick={e => setSelectedCardIndex(-1)}>Back</button>
-        <div className="details-view">
-          <div className="img-container">
-            <img className="book__img" src={books?.items[selectedCardIndex]?.volumeInfo?.imageLinks?.thumbnail}></img>
-          </div>
-          <div className="description__text">
-            <div className="description__text-categories">{books?.items[selectedCardIndex].volumeInfo?.categories}</div>
-            <div className="description__text-title">{books?.items[selectedCardIndex].volumeInfo?.title}</div>
-            <div className="description__text-authors">{books?.items[selectedCardIndex].volumeInfo?.authors}</div>
-            <div className="description__text-description">{books?.items[selectedCardIndex].volumeInfo?.description}</div>
-          </div>
-        </div>
-      </>
-    )
+    const book = books?.items[selectedCardIndex].volumeInfo
+    if (book !== undefined) {
+      view = (
+        <>
+          <button className="back" onClick={e => setSelectedCardIndex(-1)}>Back</button>
+          <DetailsView book={{
+            title: book.title ?? '',
+            authors: book.authors ?? [],
+            categories: book.categories ?? [],
+            imageLink: book.imageLinks?.thumbnail ?? 'img/logo.svg',
+            description: book.description ?? '',
+          }} />
+        </>
+      )
+    }
   }
   else {
     view = (
