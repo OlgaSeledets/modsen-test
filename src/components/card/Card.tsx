@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useState } from 'react'
 import './Card.css'
 import { Book } from '../app/App'
 

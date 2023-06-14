@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import "./App.css"
 import Card from "../card/Card"
 import { Volume } from "../../Types"
+import Header from "../header/Header"
 
 const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
@@ -42,6 +43,29 @@ function App(): JSX.Element {
   const [orderBy, setOrderBy] = useState<OrderBy>('relevance')
   const [bookName, setBookName] = useState('')
   const [selectedCardIndex, setSelectedCardIndex] = useState(-1)
+
+  const onChangeCategory = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value as Category), [])
+  const onChangeSearchBar = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value), [])
+  const onEnterPressInSearchBar = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        if (search !== '') {
+          setStatus('searching')
+          setBookName(search)
+        }
+      }
+    }, [search])
+  const onClickSearchButton = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (search !== '') {
+        setStatus('searching')
+        setBookName(search)
+        setSelectedCardIndex(-1)
+      }
+    }, [search])
+
   const getData = useCallback(
     async (search: string, category: Category, orderBy: OrderBy) => {
       const data = await getBooks(search, category, orderBy)
@@ -117,50 +141,12 @@ function App(): JSX.Element {
   }
   return (
     <>
-      <header className="header">
-        <div className="container header-container">
-          <img className="logo" src="img/logo.svg" alt="logo"></img>
-          <h1 className="title">MODSEN TEST</h1>
-          <div className="search">
-            <select
-              className="search__select select-common"
-              onChange={e => setCategory(e.target.value as Category)}
-            >
-              <option value="all">all</option>
-              <option value="art">art</option>
-              <option value="biography">biography</option>
-              <option value="computers">computers</option>
-              <option value="history">history</option>
-              <option value="medical">medical</option>
-              <option value="poetry">poetry</option>
-            </select>
-            <input
-              className="search__input"
-              type="text"
-              placeholder="Enter book name"
-              onChange={e => setSearch(e.target.value)}
-              onKeyDown={event => {
-                if (event.key === 'Enter') {
-                  if (search !== '') {
-                    setStatus('searching')
-                    setBookName(search)
-                  }
-                }
-              }}
-            ></input>
-            <button
-              className="lnr lnr-magnifier search__btn"
-              onClick={e => {
-                if (search !== '') {
-                  setStatus('searching')
-                  setBookName(search)
-                  setSelectedCardIndex(-1)
-                }
-              }}
-            ></button>
-          </div>
-        </div>
-      </header>
+      <Header
+        onChangeCategory={onChangeCategory}
+        onChangeSearchBar={onChangeSearchBar}
+        onEnterPressInSearchBar={onEnterPressInSearchBar}
+        onClickSearchButton={onClickSearchButton}
+      />
       <div className="container">
         {view}
       </div>
