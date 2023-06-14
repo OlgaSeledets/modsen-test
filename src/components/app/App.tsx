@@ -4,6 +4,7 @@ import Card from "../card/Card"
 import { Volume } from "../../Types"
 import Header from "../header/Header"
 import DetailsView from "../details-view/DetailsView"
+import CardsView from "../cards-view/CardsView"
 
 const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
@@ -66,6 +67,13 @@ function App(): JSX.Element {
         setSelectedCardIndex(-1)
       }
     }, [search])
+  const onClickCard = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const index = Number.parseInt((e.target as HTMLElement).id)
+      if (!Number.isNaN(index)) {
+        setSelectedCardIndex(index)
+      }
+    }, [])
 
   const getData = useCallback(
     async (search: string, category: Category, orderBy: OrderBy) => {
@@ -117,27 +125,7 @@ function App(): JSX.Element {
             <option value="newest">newest</option>
           </select>
         </div>
-        <div className="cards" onClick={e => {
-          const index = Number.parseInt((e.target as HTMLElement).id)
-          if (!Number.isNaN(index)) {
-            setSelectedCardIndex(index)
-          }
-        }}>
-          {books?.items.map((x, i) => {
-            const info = x.volumeInfo
-            return info ? (<Card
-              index={i}
-              key={x.etag ?? ''}
-              book={{
-                title: info?.title ?? '',
-                authors: info?.authors ?? [],
-                categories: info?.categories ?? [],
-                imageLink: info?.imageLinks?.thumbnail ?? 'img/logo.svg',
-                description: info?.description ?? '',
-              }}
-            />) : undefined
-          })}
-        </div>
+        {books !== undefined && <CardsView books={books.items} onClickCard={onClickCard} />}
       </>
     )
   }
