@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 import "./App.css"
-import Card from "../card/Card"
 import { Volume } from "../../Types"
 import Header from "../header/Header"
 import DetailsView from "../details-view/DetailsView"
