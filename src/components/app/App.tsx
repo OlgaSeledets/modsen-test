@@ -4,6 +4,9 @@ import { Volume } from "../../Types"
 import Header from "../header/Header"
 import DetailsView from "../details-view/DetailsView"
 import CardsView from "../cards-view/CardsView"
+import Subheader from "../subheader/Subheader"
+import Button from "../button/Button"
+import Choice from "../choice/Choice"
 
 const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
@@ -24,7 +27,7 @@ type Response = {
 
 type Category = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
 
-type Status = 'idle' | 'searching' | 'results-received'
+export type Status = 'idle' | 'searching' | 'results-received'
 
 type OrderBy = 'newest' | 'relevance'
 
@@ -42,9 +45,16 @@ function App(): JSX.Element {
   const [status, setStatus] = useState<Status>('idle')
   const [category, setCategory] = useState<Category>('all')
   const [orderBy, setOrderBy] = useState<OrderBy>('relevance')
-  const [bookName, setBookName] = useState('')
+  const [requestText, setRequestText] = useState('')
   const [selectedCardIndex, setSelectedCardIndex] = useState(-1)
 
+  const onChangeOrderBy = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setOrderBy(e.target.value as OrderBy)
+      if (search !== '') {
+        setStatus('searching')
+      }
+    }, [search])
   const onChangeCategory = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value as Category), [])
   const onChangeSearchBar = useCallback(
@@ -54,7 +64,7 @@ function App(): JSX.Element {
       if (e.key === 'Enter') {
         if (search !== '') {
           setStatus('searching')
-          setBookName(search)
+          setRequestText(search)
         }
       }
     }, [search])
@@ -62,7 +72,7 @@ function App(): JSX.Element {
     (e: React.MouseEvent<HTMLButtonElement>) => {
       if (search !== '') {
         setStatus('searching')
-        setBookName(search)
+        setRequestText(search)
         setSelectedCardIndex(-1)
       }
     }, [search])
@@ -92,40 +102,19 @@ function App(): JSX.Element {
     const book = books?.items[selectedCardIndex].volumeInfo
     if (book !== undefined) {
       view = (
-        <>
-          <button className="back" onClick={e => setSelectedCardIndex(-1)}>Back</button>
-          <DetailsView book={{
-            title: book.title ?? '',
-            authors: book.authors ?? [],
-            categories: book.categories ?? [],
-            imageLink: book.imageLinks?.thumbnail ?? 'img/logo.svg',
-            description: book.description ?? '',
-          }} />
-        </>
+        <DetailsView book={{
+          title: book.title ?? '',
+          authors: book.authors ?? [],
+          categories: book.categories ?? [],
+          imageLink: book.imageLinks?.thumbnail ?? 'img/logo.svg',
+          description: book.description ?? '',
+        }} />
       )
     }
   }
   else {
     view = (
-      <>
-        <div className="subheader">
-          {status === 'results-received' && <div>{books?.totalItems} results for {bookName}</div>}
-          <span className="spacer"></span>
-          <select
-            className="subheader__select select-common"
-            onChange={e => {
-              setOrderBy(e.target.value as OrderBy)
-              if (search !== '') {
-                setStatus('searching')
-              }
-            }}
-          >
-            <option value="relevance">relevance</option>
-            <option value="newest">newest</option>
-          </select>
-        </div>
-        {books !== undefined && <CardsView books={books.items} onClickCard={onClickCard} />}
-      </>
+      books !== undefined && <CardsView books={books.items} onClickCard={onClickCard} />
     )
   }
   return (
@@ -137,6 +126,19 @@ function App(): JSX.Element {
         onClickSearchButton={onClickSearchButton}
       />
       <div className="container">
+        <Subheader>
+          {selectedCardIndex === -1
+            ? <>
+              {status === 'results-received' && <div>{books?.totalItems} results for {requestText}</div>}
+              <span className="spacer"></span>
+              <Choice<OrderBy> onChooseOption={onChangeOrderBy} options={[
+                { caption: 'Relevance', value: 'relevance' },
+                { caption: 'Newest', value: 'newest' }
+              ]}/>
+            </>
+            : <Button caption={'Back'} action={() => setSelectedCardIndex(-1)} />
+          }
+        </Subheader>
         {view}
       </div>
     </>
