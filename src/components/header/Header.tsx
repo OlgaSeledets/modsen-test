@@ -1,3 +1,5 @@
+import { Category } from '../app/App'
+import Choice from '../choice/Choice'
 import './Header.css'
 
 type HeaderProps = {
@@ -15,18 +17,15 @@ function Header(props: HeaderProps): JSX.Element {
         <img className="logo" src="img/logo.svg" alt="logo"></img>
         <h1 className="title">MODSEN TEST</h1>
         <div className="search">
-          <select
-            className="search__select select-common"
-            onChange={props.onChangeCategory}
-          >
-            <option value="all">all</option>
-            <option value="art">art</option>
-            <option value="biography">biography</option>
-            <option value="computers">computers</option>
-            <option value="history">history</option>
-            <option value="medical">medical</option>
-            <option value="poetry">poetry</option>
-          </select>
+          <Choice<Category> style="search__select" onChooseOption={props.onChangeCategory} options={[
+            { caption: 'All', value: 'all' },
+            { caption: 'Art', value: 'art' },
+            { caption: 'Biography', value: 'biography' },
+            { caption: 'Computers', value: 'computers' },
+            { caption: 'History', value: 'history' },
+            { caption: 'Medical', value: 'medical' },
+            { caption: 'Poetry', value: 'poetry' },
+          ]}/>
           <input
             className="search__input"
             type="text"
