@@ -97,26 +97,7 @@ function App(): JSX.Element {
     }
   }, [status])
 
-  let view
-  if (selectedCardIndex !== -1) {
-    const book = books?.items[selectedCardIndex].volumeInfo
-    if (book !== undefined) {
-      view = (
-        <DetailsView book={{
-          title: book.title ?? '',
-          authors: book.authors ?? [],
-          categories: book.categories ?? [],
-          imageLink: book.imageLinks?.thumbnail ?? 'img/logo.svg',
-          description: book.description ?? '',
-        }} />
-      )
-    }
-  }
-  else {
-    view = (
-      books !== undefined && <CardsView books={books.items} onClickCard={onClickCard} />
-    )
-  }
+  const book = selectedCardIndex !== -1 ? books?.items[selectedCardIndex].volumeInfo : undefined
   return (
     <>
       <Header
@@ -134,12 +115,21 @@ function App(): JSX.Element {
               <Choice<OrderBy> onChooseOption={onChangeOrderBy} options={[
                 { caption: 'Relevance', value: 'relevance' },
                 { caption: 'Newest', value: 'newest' }
-              ]}/>
+              ]} />
             </>
             : <Button caption={'Back'} action={() => setSelectedCardIndex(-1)} />
           }
         </Subheader>
-        {view}
+        {selectedCardIndex !== -1
+          ? <DetailsView book={{
+            title: book?.title ?? '',
+            authors: book?.authors ?? [],
+            categories: book?.categories ?? [],
+            imageLink: book?.imageLinks?.thumbnail ?? 'img/logo.svg',
+            description: book?.description ?? '',
+          }} />
+          : books !== undefined && <CardsView books={books.items} onClickCard={onClickCard} />
+        }
       </div>
     </>
   )
