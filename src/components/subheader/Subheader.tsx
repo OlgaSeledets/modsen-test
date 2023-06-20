@@ -1,5 +1,5 @@
 import React from 'react'
-import './Subheader.css'
+import { subheader } from './Subheader.css'
 
 type SubheaderProps = {
   children: React.ReactNode
@@ -7,7 +7,7 @@ type SubheaderProps = {
 
 function Subheader(props: SubheaderProps): JSX.Element {
   return (
-    <div className="subheader">
+    <div className={subheader}>
       {props.children}
     </div>
   )

@@ -7,6 +7,8 @@ import CardsView from "../cards-view/CardsView"
 import Subheader from "../subheader/Subheader"
 import Button from "../button/Button"
 import Choice from "../choice/Choice"
+import { subheaderSelect } from "../subheader/Subheader.css"
+import { container } from "../../global.css"
 
 const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
@@ -106,13 +108,13 @@ function App(): JSX.Element {
         onEnterPressInSearchBar={onEnterPressInSearchBar}
         onClickSearchButton={onClickSearchButton}
       />
-      <div className="container">
+      <div className={container}>
         <Subheader>
           {selectedCardIndex === -1
             ? <>
               {status === 'results-received' && <div>{books?.totalItems} results for {requestText}</div>}
               <span className="spacer"></span>
-              <Choice<OrderBy> onChooseOption={onChangeOrderBy} options={[
+              <Choice<OrderBy> customStyles={subheaderSelect} onChooseOption={onChangeOrderBy} options={[
                 { caption: 'Relevance', value: 'relevance' },
                 { caption: 'Newest', value: 'newest' }
               ]} />

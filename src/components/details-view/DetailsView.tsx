@@ -1,13 +1,13 @@
 import { Book } from '../app/App'
-import './DetailsView.css'
+import { detailsView, imgContainer } from './DetailsView.css'
 
 type DetailsViewProps = { book: Book }
 
 function DetailsView(props: DetailsViewProps): JSX.Element {
   const book = props.book
   return (
-    <div className="details-view">
-      <div className="img-container">
+    <div className={detailsView}>
+      <div className={imgContainer}>
         <img className="book__img" src={book.imageLink}></img>
       </div>
       <div className="description__text">
