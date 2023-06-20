@@ -1,39 +1,11 @@
-.book__img {
-  width: 17rem;
-  height: 23rem;
-  border-radius: 0.5rem;
-  background-color: #4A4E69;
-  border: 1px solid rgba(0, 0, 0, 0.75);
-  box-shadow: -4px 4px 10px 0px rgba(0, 0, 0, 0.75);
-}
-
-.description__text {
-  max-width: 70rem;
-  min-width: 17rem;
-}
-
-.description__text-categories {
-  margin-bottom: 0.5rem;
-}
-
-.description__text-title {
-  font-size: 22px;
-  margin-bottom: 0.5rem;
-}
-
-.description__text-authors {
-  margin-bottom: 1.5rem;
-}
-
-.description__text-description {
-  text-align: justify;
-  font-size: 18px;
-}
-
 .back {
   width: 4rem;
   height: 2rem;
   border-radius: 1rem;
   border: 0.1px solid #444;
   cursor: pointer;
+}
+
+.spacer {
+  flex-grow: 1;
 }

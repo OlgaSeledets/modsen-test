@@ -58,10 +58,6 @@
   .card__text-author {
     color: #b7b7b7;
   }
-  
-  .spacer {
-    flex-grow: 1;
-  }
 
   .nonclickable {
     pointer-events: none;
