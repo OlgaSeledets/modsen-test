@@ -1,5 +1,5 @@
 import { css } from "@emotion/css"
-  
+
 export const card = css`
   width: 13rem;
   height: 18rem;

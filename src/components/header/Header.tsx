@@ -16,7 +16,7 @@ export function Header(props: HeaderProps): JSX.Element {
       <div className={cx(container, headerContainer)}>
         <img className={logo} src="img/logo.svg" alt="logo"></img>
         <h1 className={title}>MODSEN TEST</h1>
-        <SearchBar 
+        <SearchBar
           onChangeCategory={props.onChangeCategory}
           onChangeSearchBar={props.onChangeSearchBar}
           onEnterPressInSearchBar={props.onEnterPressInSearchBar}
