@@ -1,8 +1,7 @@
 import { cx } from '@emotion/css'
-import { Category } from '../app/App'
-import { Choice } from '../choice/Choice'
-import { header, headerContainer, logo, title, searchSelect, search, searchInput, searchBtn } from './Header.css'
+import { header, headerContainer, logo, title } from './Header.css'
 import { container } from '../../global.css'
+import { SearchBar } from '../search-bar/SearchBar'
 
 type HeaderProps = {
   onChangeCategory: (e: React.ChangeEvent<HTMLSelectElement>) => void
@@ -12,34 +11,17 @@ type HeaderProps = {
 }
 
 export function Header(props: HeaderProps): JSX.Element {
-
   return (
     <header className={header}>
       <div className={cx(container, headerContainer)}>
         <img className={logo} src="img/logo.svg" alt="logo"></img>
         <h1 className={title}>MODSEN TEST</h1>
-        <div className={search}>
-          <Choice<Category> customStyles={searchSelect} onChooseOption={props.onChangeCategory} options={[
-            { caption: 'All', value: 'all' },
-            { caption: 'Art', value: 'art' },
-            { caption: 'Biography', value: 'biography' },
-            { caption: 'Computers', value: 'computers' },
-            { caption: 'History', value: 'history' },
-            { caption: 'Medical', value: 'medical' },
-            { caption: 'Poetry', value: 'poetry' },
-          ]}/>
-          <input
-            className={searchInput}
-            type="text"
-            placeholder="Enter book name"
-            onChange={props.onChangeSearchBar}
-            onKeyDown={props.onEnterPressInSearchBar}
-          ></input>
-          <button
-            className={cx(searchBtn, "lnr lnr-magnifier")}
-            onClick={props.onClickSearchButton}
-          ></button>
-        </div>
+        <SearchBar 
+          onChangeCategory={props.onChangeCategory}
+          onChangeSearchBar={props.onChangeSearchBar}
+          onEnterPressInSearchBar={props.onEnterPressInSearchBar}
+          onClickSearchButton={props.onClickSearchButton}
+        />
       </div>
     </header>
   )

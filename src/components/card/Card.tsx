@@ -1,4 +1,3 @@
-import './Card.css'
 import { Book } from '../app/App'
 import * as styles from './Card.css'
 import { cx } from '@emotion/css'
