@@ -1,5 +1,4 @@
 import { cx } from '@emotion/css'
-import './Choice.css'
 import { choiceBaseStyles } from './Choice.css'
 
 type Option<T> = {
@@ -13,7 +12,7 @@ type ChoiceProps<T> = {
   customStyles?: string
 }
 
-function Choice<T extends string>(props: ChoiceProps<T>): JSX.Element {
+export function Choice<T extends string>(props: ChoiceProps<T>): JSX.Element {
   return (
     <select
       className={cx(choiceBaseStyles, props.customStyles ?? '')}
@@ -23,5 +22,3 @@ function Choice<T extends string>(props: ChoiceProps<T>): JSX.Element {
     </select>
   )
 }
-
-export default Choice

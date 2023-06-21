@@ -1,26 +1,27 @@
 import './Card.css'
 import { Book } from '../app/App'
+import * as styles from './Card.css'
+import { cx } from '@emotion/css'
+import { spacer } from '../../global.css'
 
 type CardProps = { index: number, book: Book }
 
-function Card(props: CardProps): JSX.Element {
+export function Card(props: CardProps): JSX.Element {
   const book = props.book
   const category = book.categories[0] ?? ''
   return (
-    <div className="card" id={`${props.index}`}>
+    <div className={styles.card} id={`${props.index}`}>
       <img
-        className="card__img nonclickable"
+        className={cx(styles.cardImg, styles.nonclickable)}
         src={book.imageLink}
         alt="cover"
       ></img>
-      <div className="card__text nonclickable">
-        <div className="card__text-categories nonclickable">{category}</div>
-        <div className="spacer nonclickable"></div>
-        <div className="card__text-title nonclickable">{book.title}</div>
-        <div className="card__text-author nonclickable">{book.authors.join(' ')}</div>
+      <div className={cx(styles.cardText, styles.nonclickable)}>
+        <div className={cx(styles.cardTextCategories, styles.nonclickable)}>{category}</div>
+        <div className={cx(spacer, styles.nonclickable)}></div>
+        <div className={cx(styles.cardTextTitle, styles.nonclickable)}>{book.title}</div>
+        <div className={cx(styles.cardTextAuthor, styles.nonclickable)}>{book.authors.join(' ')}</div>
       </div>
     </div>
   )
 }
-
-export default Card

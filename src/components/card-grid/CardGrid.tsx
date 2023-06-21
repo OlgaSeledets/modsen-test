@@ -1,17 +1,16 @@
 import { Volume } from '../../Types'
-import Card from '../card/Card'
-import './CardsView.css'
+import { Card } from '../card/Card'
+import { cards } from './CardGrid.css'
 
-type CardsViewProps = {
+type CardGridProps = {
   books: Array<Volume>
   onClickCard: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
-function CardsView(props: CardsViewProps): JSX.Element {
-
+export function CardsView(props: CardGridProps): JSX.Element {
   return (
     <>
-      <div className="cards" onClick={props.onClickCard}>
+      <div className={cards} onClick={props.onClickCard}>
         {props.books.map((x, i) => {
           const info = x.volumeInfo
           return info ? (<Card
@@ -30,5 +29,3 @@ function CardsView(props: CardsViewProps): JSX.Element {
     </>
   )
 }
-
-export default CardsView

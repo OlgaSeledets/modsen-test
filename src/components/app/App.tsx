@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react"
 import "./App.css"
 import { Volume } from "../../Types"
-import Header from "../header/Header"
-import DetailsView from "../details-view/DetailsView"
-import CardsView from "../cards-view/CardsView"
-import Subheader from "../subheader/Subheader"
-import Button from "../button/Button"
-import Choice from "../choice/Choice"
-import { subheaderSelect } from "../subheader/Subheader.css"
-import { container } from "../../global.css"
+import { Header } from "../header/Header"
+import { CardDetails } from "../card-details/CardDetails"
+import { CardsView } from "../card-grid/CardGrid"
+import { Subheader } from "../subheader/Subheader"
+import { Button } from "../button/Button"
+import { Choice } from "../choice/Choice"
+import { container, spacer } from "../../global.css"
+import { back } from "../button/Button.css"
+import { subheaderSelect } from "./App.css"
 
 const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
 const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
@@ -113,17 +114,17 @@ function App(): JSX.Element {
           {selectedCardIndex === -1
             ? <>
               {status === 'results-received' && <div>{books?.totalItems} results for {requestText}</div>}
-              <span className="spacer"></span>
+              <span className={spacer}></span>
               <Choice<OrderBy> customStyles={subheaderSelect} onChooseOption={onChangeOrderBy} options={[
                 { caption: 'Relevance', value: 'relevance' },
                 { caption: 'Newest', value: 'newest' }
               ]} />
             </>
-            : <Button caption={'Back'} action={() => setSelectedCardIndex(-1)} />
+            : <Button customStyles={back} caption={'Back'} action={() => setSelectedCardIndex(-1)} />
           }
         </Subheader>
         {selectedCardIndex !== -1
-          ? <DetailsView book={{
+          ? <CardDetails book={{
             title: book?.title ?? '',
             authors: book?.authors ?? [],
             categories: book?.categories ?? [],

@@ -1,6 +1,6 @@
 import { cx } from '@emotion/css'
 import { Category } from '../app/App'
-import Choice from '../choice/Choice'
+import { Choice } from '../choice/Choice'
 import { header, headerContainer, logo, title, searchSelect, search, searchInput, searchBtn } from './Header.css'
 import { container } from '../../global.css'
 
@@ -11,7 +11,7 @@ type HeaderProps = {
   onClickSearchButton: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-function Header(props: HeaderProps): JSX.Element {
+export function Header(props: HeaderProps): JSX.Element {
 
   return (
     <header className={header}>
@@ -44,5 +44,3 @@ function Header(props: HeaderProps): JSX.Element {
     </header>
   )
 }
-
-export default Header
