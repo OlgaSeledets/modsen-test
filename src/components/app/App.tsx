@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useState } from "react"
-import "./App.css"
-import { Volume } from "../../Types"
 import { Header } from "../header/Header"
 import { CardDetails } from "../card-details/CardDetails"
 import { CardsView } from "../card-grid/CardGrid"
@@ -10,9 +8,7 @@ import { Choice } from "../choice/Choice"
 import { container, spacer } from "../../global.css"
 import { back } from "../button/Button.css"
 import { subheaderSelect } from "./App.css"
-
-const BOOKS_API_BASE_URL = "https://www.googleapis.com/books/v1/volumes"
-const KEY = "AIzaSyCe2JsmWBjV6Sg5do4S7lNPitIrl3iaNIY"
+import { VolumesResponse, requestVolumes } from "../../Requests"
 
 export type Book = {
   title: string
@@ -22,28 +18,14 @@ export type Book = {
   description: string
 }
 
-type Response = {
-  items: Array<Volume>
-  kind: string
-  totalItems: number
-}
-
 export type Category = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
 
 export type Status = 'idle' | 'searching' | 'results-received'
 
-type OrderBy = 'newest' | 'relevance'
-
-async function getBooks(search: string, category: Category, orderBy: OrderBy): Promise<Response> {
-  const cat = category === 'all' ? '' : `+subject:${category}`
-  const response = await fetch(
-    `${BOOKS_API_BASE_URL}?q=${search}${cat}&orderBy=${orderBy}&key=${KEY}&maxResults=30`
-  )
-  return await response.json()
-}
+export type OrderBy = 'newest' | 'relevance'
 
 function App(): JSX.Element {
-  const [books, setBooks] = useState<Response>()
+  const [books, setBooks] = useState<VolumesResponse>()
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   const [category, setCategory] = useState<Category>('all')
@@ -89,7 +71,7 @@ function App(): JSX.Element {
 
   const getData = useCallback(
     async (search: string, category: Category, orderBy: OrderBy) => {
-      const data = await getBooks(search, category, orderBy)
+      const data = await requestVolumes(search, category, orderBy)
       setBooks(data)
       setStatus('results-received')
     }, [])
