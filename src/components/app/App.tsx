@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Header } from "../header/Header"
 import { CardDetails } from "../card-details/CardDetails"
-import { CardsView } from "../card-grid/CardGrid"
+import { CardGrid } from "../card-grid/CardGrid"
 import { Subheader } from "../subheader/Subheader"
 import { Button } from "../button/Button"
 import { Choice } from "../choice/Choice"
@@ -113,7 +113,7 @@ function App(): JSX.Element {
             imageLink: book?.imageLinks?.thumbnail ?? 'img/logo.svg',
             description: book?.description ?? '',
           }} />
-          : books !== undefined && <CardsView books={books.items} onClickCard={onClickCard} />
+          : books !== undefined && <CardGrid books={books.items} onClickCard={onClickCard} />
         }
       </div>
     </>
