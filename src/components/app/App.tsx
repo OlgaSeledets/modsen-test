@@ -102,7 +102,7 @@ function App(): JSX.Element {
         }} />
       }
       else {
-        <CardGrid books={books.items ?? []} onClickCard={onClickCard} />
+        mainView = <CardGrid books={books.items ?? []} onClickCard={onClickCard} />
       }
     }
   }
