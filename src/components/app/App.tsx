@@ -20,7 +20,7 @@ export type Book = {
 
 export type Category = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
 
-export type Status = 'idle' | 'searching' | 'results-received'
+export type Status = 'idle' | 'searching' | 'results-received' | 'error'
 
 export type OrderBy = 'newest' | 'relevance'
 
@@ -72,8 +72,13 @@ function App(): JSX.Element {
   const getData = useCallback(
     async (search: string, category: Category, orderBy: OrderBy) => {
       const data = await requestVolumes(search, category, orderBy)
-      setBooks(data)
-      setStatus('results-received')
+      if (data !== undefined) {
+        setBooks(data)
+        setStatus('results-received')
+      }
+      else {
+        setStatus('error')
+      }
     }, [])
 
   useEffect(() => {
@@ -83,6 +88,27 @@ function App(): JSX.Element {
   }, [status])
 
   const book = selectedCardIndex !== -1 ? books?.items[selectedCardIndex].volumeInfo : undefined
+
+  let mainView
+  if (status !== 'error') {
+    if (books !== undefined) {
+      if (selectedCardIndex !== -1) {
+        mainView = <CardDetails book={{
+          title: book?.title ?? '',
+          authors: book?.authors ?? [],
+          categories: book?.categories ?? [],
+          imageLink: book?.imageLinks?.thumbnail ?? 'img/logo.svg',
+          description: book?.description ?? '',
+        }} />
+      }
+      else {
+        <CardGrid books={books.items ?? []} onClickCard={onClickCard} />
+      }
+    }
+  }
+  else {
+    mainView = <div>Error</div>
+  }
   return (
     <>
       <Header
@@ -105,16 +131,7 @@ function App(): JSX.Element {
             : <Button customStyles={back} caption={'Back'} action={() => setSelectedCardIndex(-1)} />
           }
         </Subheader>
-        {selectedCardIndex !== -1
-          ? <CardDetails book={{
-            title: book?.title ?? '',
-            authors: book?.authors ?? [],
-            categories: book?.categories ?? [],
-            imageLink: book?.imageLinks?.thumbnail ?? 'img/logo.svg',
-            description: book?.description ?? '',
-          }} />
-          : books !== undefined && <CardGrid books={books.items} onClickCard={onClickCard} />
-        }
+        {mainView}
       </div>
     </>
   )
