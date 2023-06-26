@@ -34,6 +34,7 @@ export const descriptionTextDescription = css`
 
 export const detailsView = css`
   display: flex;
+  margin-bottom: 40px;
 
   @media (max-width: 664px) {
     display: block;

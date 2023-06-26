@@ -22,7 +22,7 @@ export type Book = {
 
 export type Category = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
 
-export type Status = 'idle' | 'searching' | 'results-received' | 'error'
+export type Status = 'idle' | 'searching' | 'results-received' | 'error' | 'loading'
 
 export type OrderBy = 'newest' | 'relevance'
 
