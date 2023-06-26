@@ -90,7 +90,7 @@ function App(): JSX.Element {
   const book = selectedCardIndex !== -1 ? books?.items[selectedCardIndex].volumeInfo : undefined
 
   let mainView
-  if (status !== 'error') {
+  if (status !== 'error' && books?.totalItems !== 0) {
     if (books !== undefined) {
       if (selectedCardIndex !== -1) {
         mainView = <CardDetails book={{
