@@ -33,6 +33,7 @@ function App(): JSX.Element {
   const [orderBy, setOrderBy] = useState<OrderBy>('relevance')
   const [requestText, setRequestText] = useState('')
   const [selectedCardIndex, setSelectedCardIndex] = useState(-1)
+  const [startIndex, setStartIndex] = useState(0)
 
   const onChangeOrderBy = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -69,10 +70,15 @@ function App(): JSX.Element {
         setSelectedCardIndex(index)
       }
     }, [])
+  const onClickLoadMoreButton = useCallback(
+    () => {
+      setStartIndex(startIndex + 30)
+      setStatus('searching')
+    }, [startIndex])
 
   const getData = useCallback(
-    async (search: string, category: Category, orderBy: OrderBy) => {
-      const data = await requestVolumes(search, category, orderBy)
+    async (search: string, category: Category, orderBy: OrderBy, startIndex: number) => {
+      const data = await requestVolumes(search, category, orderBy, startIndex)
       if (data !== undefined) {
         setBooks(data)
         setStatus('results-received')
@@ -84,7 +90,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (status === 'searching') {
-      void getData(search, category, orderBy)
+      void getData(search, category, orderBy, startIndex)
     }
   }, [status])
 
@@ -103,7 +109,7 @@ function App(): JSX.Element {
         }} />
       }
       else {
-        mainView = <CardGrid books={books.items ?? []} onClickCard={onClickCard} />
+        mainView = <CardGrid books={books.items ?? []} onClickCard={onClickCard} onClickLoadMoreButton={onClickLoadMoreButton} />
       }
     }
   }

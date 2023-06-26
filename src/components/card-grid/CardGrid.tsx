@@ -8,6 +8,7 @@ import { cardGrid, cards } from './CardGrid.css'
 type CardGridProps = {
   books: Array<Volume>
   onClickCard: (e: React.MouseEvent<HTMLDivElement>) => void
+  onClickLoadMoreButton: () => void
 }
 
 export function CardGrid(props: CardGridProps): JSX.Element {
@@ -29,7 +30,7 @@ export function CardGrid(props: CardGridProps): JSX.Element {
           />) : undefined
         })}
       </div>
-      <Button customStyles={cx(loadMore, general)} caption={'Load more'} action={() => console.log('more')} />
+      <Button customStyles={cx(loadMore, general)} caption={'Load more'} action={props.onClickLoadMoreButton} />
     </div>
   )
 }
