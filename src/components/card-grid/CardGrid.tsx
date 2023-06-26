@@ -1,6 +1,9 @@
+import { cx } from '@emotion/css'
 import { Volume } from '../../Types'
+import { Button } from '../button/Button'
+import { general, loadMore } from '../button/Button.css'
 import { Card } from '../card/Card'
-import { cards } from './CardGrid.css'
+import { cardGrid, cards } from './CardGrid.css'
 
 type CardGridProps = {
   books: Array<Volume>
@@ -9,7 +12,7 @@ type CardGridProps = {
 
 export function CardGrid(props: CardGridProps): JSX.Element {
   return (
-    <>
+    <div className={cardGrid}>
       <div className={cards} onClick={props.onClickCard}>
         {props.books.map((x, i) => {
           const info = x.volumeInfo
@@ -26,6 +29,7 @@ export function CardGrid(props: CardGridProps): JSX.Element {
           />) : undefined
         })}
       </div>
-    </>
+      <Button customStyles={cx(loadMore, general)} caption={'Load more'} action={() => console.log('more')} />
+    </div>
   )
 }

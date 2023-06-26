@@ -6,9 +6,10 @@ import { Subheader } from "../subheader/Subheader"
 import { Button } from "../button/Button"
 import { Choice } from "../choice/Choice"
 import { container, spacer } from "../../global.css"
-import { back } from "../button/Button.css"
+import { back, general } from "../button/Button.css"
 import { subheaderSelect } from "./App.css"
 import { VolumesResponse, requestVolumes } from "../../Requests"
+import { cx } from "@emotion/css"
 
 export type Book = {
   title: string
@@ -128,7 +129,7 @@ function App(): JSX.Element {
                 { caption: 'Newest', value: 'newest' }
               ]} />
             </>
-            : <Button customStyles={back} caption={'Back'} action={() => setSelectedCardIndex(-1)} />
+            : <Button customStyles={cx(back, general)} caption={'Back'} action={() => setSelectedCardIndex(-1)} />
           }
         </Subheader>
         {mainView}
