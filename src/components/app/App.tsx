@@ -10,6 +10,7 @@ import { back, general } from "../button/Button.css"
 import { subheaderSelect } from "./App.css"
 import { VolumesResponse, requestVolumes } from "../../Requests"
 import { cx } from "@emotion/css"
+import { Volume } from "../../Types"
 
 export type Book = {
   title: string
@@ -34,6 +35,7 @@ function App(): JSX.Element {
   const [requestText, setRequestText] = useState('')
   const [selectedCardIndex, setSelectedCardIndex] = useState(-1)
   const [startIndex, setStartIndex] = useState(0)
+  const [items, setItems] = useState<Volume[] | undefined>([])
 
   const onChangeOrderBy = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -82,11 +84,12 @@ function App(): JSX.Element {
       if (data !== undefined) {
         setBooks(data)
         setStatus('results-received')
+        setItems((items ?? []).concat(data?.items))
       }
       else {
         setStatus('error')
       }
-    }, [])
+    }, [items])
 
   useEffect(() => {
     if (status === 'searching') {
@@ -94,7 +97,7 @@ function App(): JSX.Element {
     }
   }, [status])
 
-  const book = selectedCardIndex !== -1 ? books?.items[selectedCardIndex].volumeInfo : undefined
+  const book = selectedCardIndex !== -1 ? items?.[selectedCardIndex].volumeInfo : undefined
 
   let mainView
   if (status !== 'error' && books?.totalItems !== 0) {
@@ -109,7 +112,7 @@ function App(): JSX.Element {
         }} />
       }
       else {
-        mainView = <CardGrid books={books.items ?? []} onClickCard={onClickCard} onClickLoadMoreButton={onClickLoadMoreButton} />
+        mainView = <CardGrid books={items ?? []} onClickCard={onClickCard} onClickLoadMoreButton={onClickLoadMoreButton} />
       }
     }
   }
