@@ -123,7 +123,12 @@ function App(): JSX.Element {
         }} />
       }
       else {
-        mainView = <CardGrid books={items ?? []} onClickCard={onClickCard} onClickLoadMoreButton={onClickLoadMoreButton} />
+        if (items?.length === 0) {
+          mainView = <div>Loading...</div>
+        }
+        else {
+          mainView = <CardGrid books={items ?? []} onClickCard={onClickCard} onClickLoadMoreButton={onClickLoadMoreButton} />
+        }
       }
     }
   }
