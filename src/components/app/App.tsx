@@ -42,10 +42,14 @@ function App(): JSX.Element {
       setOrderBy(e.target.value as OrderBy)
       if (search !== '') {
         setStatus('searching')
+        resetSearch()
       }
     }, [search])
   const onChangeCategory = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => setCategory(e.target.value as Category), [])
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setCategory(e.target.value as Category)
+      resetSearch()
+    }, [])
   const onChangeSearchBar = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value), [])
   const onEnterPressInSearchBar = useCallback(
@@ -54,6 +58,7 @@ function App(): JSX.Element {
         if (search !== '') {
           setStatus('searching')
           setRequestText(search)
+          resetSearch()
         }
       }
     }, [search])
@@ -63,6 +68,7 @@ function App(): JSX.Element {
         setStatus('searching')
         setRequestText(search)
         setSelectedCardIndex(-1)
+        resetSearch()
       }
     }, [search])
   const onClickCard = useCallback(
@@ -96,6 +102,11 @@ function App(): JSX.Element {
       void getData(search, category, orderBy, startIndex)
     }
   }, [status])
+
+  function resetSearch(): void {
+    setItems([])
+    setStartIndex(0)
+  }
 
   const book = selectedCardIndex !== -1 ? items?.[selectedCardIndex].volumeInfo : undefined
 
