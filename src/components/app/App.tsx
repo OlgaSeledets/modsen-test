@@ -84,7 +84,7 @@ function App(): JSX.Element {
       if (data !== undefined) {
         setBooks(data)
         setStatus('results-received')
-        setItems((items ?? []).concat(data?.items))
+        setItems((items?.filter(e => e !== undefined) ?? []).concat(data?.items))
       }
       else {
         setStatus('error')
