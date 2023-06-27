@@ -22,7 +22,7 @@ export type Book = {
 
 export type Category = 'all' | 'art' | 'biography' | 'computers' | 'history' | 'medical' | 'poetry'
 
-export type Status = 'idle' | 'searching' | 'results-received' | 'error' | 'loading'
+export type Status = 'idle' | 'searching' | 'results-received' | 'error'
 
 export type OrderBy = 'newest' | 'relevance'
 
@@ -90,7 +90,7 @@ function App(): JSX.Element {
       if (data !== undefined) {
         setBooks(data)
         setStatus('results-received')
-        setItems((items?.filter(e => e !== undefined) ?? []).concat(data?.items))
+        setItems((items ?? []).concat(data?.items ?? []))
       }
       else {
         setStatus('error')
