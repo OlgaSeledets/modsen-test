@@ -133,7 +133,7 @@ function App(): JSX.Element {
     }
   }
   else {
-    mainView = <div>Error</div>
+    mainView = <div>Oops, an error has occurred. Try turning on the VPN :)</div>
   }
   return (
     <>
