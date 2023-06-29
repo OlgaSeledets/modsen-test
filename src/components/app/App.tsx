@@ -49,8 +49,11 @@ function App(): JSX.Element {
   const onChangeCategory = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setCategory(e.target.value as Category)
-      resetSearch()
-    }, [])
+      if (search !== '') {
+        setStatus('searching')
+        resetSearch()
+      }
+    }, [search])
   const onChangeSearchBar = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value), [])
   const onEnterPressInSearchBar = useCallback(
@@ -112,6 +115,9 @@ function App(): JSX.Element {
   const book = selectedCardIndex !== -1 ? items?.[selectedCardIndex].volumeInfo : undefined
 
   let mainView
+  if (status === 'searching') {
+    mainView = <div className={loadingMessage}>Loading...</div>
+  }
   if (status !== 'error' && books?.totalItems !== 0) {
     if (books !== undefined) {
       if (selectedCardIndex !== -1) {
@@ -134,7 +140,12 @@ function App(): JSX.Element {
     }
   }
   else {
-    mainView = <div className={errorMessage}>Oops, an error has occurred. Try turning on the VPN :)</div>
+    if (status === 'searching') {
+      mainView = <div className={loadingMessage}>Loading...</div>
+    }
+    else {
+      mainView = <div className={errorMessage}>Oops, an error has occurred. Try turning on the VPN :)</div>
+    }
   }
   return (
     <>

@@ -51,6 +51,9 @@ export const cardTextTitle = css`
 
 export const cardTextAuthor = css`
   color: #b7b7b7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 export const nonclickable = css`
