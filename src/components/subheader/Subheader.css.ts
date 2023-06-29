@@ -6,3 +6,15 @@ export const subheader = css`
   height: 1.9rem;
   align-items: center;
 `
+
+export const bookCount = css`
+  animation: appear 2s;
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`

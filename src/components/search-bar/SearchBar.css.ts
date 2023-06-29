@@ -6,6 +6,7 @@ export const search = css`
 
 export const searchSelect = css`
   border-right: 1px solid rgba(127, 127, 127, 0.5);
+  padding: 4px;
 `
 
 export const searchInput = css`
@@ -15,6 +16,7 @@ export const searchInput = css`
   border: none;
   outline: none;
   vertical-align: middle;
+  padding: 4px;
 `
 
 export const searchBtn = css`

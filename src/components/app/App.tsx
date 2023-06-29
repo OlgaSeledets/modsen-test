@@ -7,10 +7,11 @@ import { Button } from "../button/Button"
 import { Choice } from "../choice/Choice"
 import { container, spacer } from "../../global.css"
 import { back, general } from "../button/Button.css"
-import { subheaderSelect } from "./App.css"
+import { errorMessage, loadingMessage, subheaderSelect } from "./App.css"
 import { VolumesResponse, requestVolumes } from "../../Requests"
 import { cx } from "@emotion/css"
 import { Volume } from "../../Types"
+import { bookCount } from "../subheader/Subheader.css"
 
 export type Book = {
   title: string
@@ -124,7 +125,7 @@ function App(): JSX.Element {
       }
       else {
         if (items?.length === 0) {
-          mainView = <div>Loading...</div>
+          mainView = <div className={loadingMessage}>Loading...</div>
         }
         else {
           mainView = <CardGrid books={items ?? []} onClickCard={onClickCard} onClickLoadMoreButton={onClickLoadMoreButton} />
@@ -133,7 +134,7 @@ function App(): JSX.Element {
     }
   }
   else {
-    mainView = <div>Oops, an error has occurred. Try turning on the VPN :)</div>
+    mainView = <div className={errorMessage}>Oops, an error has occurred. Try turning on the VPN :)</div>
   }
   return (
     <>
@@ -147,7 +148,7 @@ function App(): JSX.Element {
         <Subheader>
           {selectedCardIndex === -1
             ? <>
-              {status === 'results-received' && <div>{books?.totalItems} results for {requestText}</div>}
+              {status === 'results-received' && <div className={bookCount}>{books?.totalItems} results for {requestText}</div>}
               <span className={spacer}></span>
               <Choice<OrderBy> customStyles={subheaderSelect} onChooseOption={onChangeOrderBy} options={[
                 { caption: 'Relevance', value: 'relevance' },
