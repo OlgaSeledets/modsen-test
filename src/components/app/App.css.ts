@@ -5,13 +5,18 @@ export const subheaderSelect = css`
   border-bottom-right-radius: 1rem;
   padding: 4px;
 `
-export const errorMessage = css`
+
+export const message = css`
   position: absolute;
   left: 50%;
-  transform: translate(-50%, 0%);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 25px;
+`
+
+export const errorMessage = css`
   min-width: 254px;
   text-align: center;
-  font-size: 18px;
   animation: appear 3s;
   @keyframes appear {
     from {
@@ -21,11 +26,4 @@ export const errorMessage = css`
       opacity: 1;
     }
   }
-`
-
-export const loadingMessage = css`
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  font-size: 18px;
 `

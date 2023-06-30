@@ -7,7 +7,7 @@ import { Button } from "../button/Button"
 import { Choice } from "../choice/Choice"
 import { container, spacer } from "../../global.css"
 import { back, general } from "../button/Button.css"
-import { errorMessage, loadingMessage, subheaderSelect } from "./App.css"
+import { errorMessage, message, subheaderSelect } from "./App.css"
 import { VolumesResponse, requestVolumes } from "../../Requests"
 import { cx } from "@emotion/css"
 import { Volume } from "../../Types"
@@ -116,7 +116,7 @@ function App(): JSX.Element {
 
   let mainView
   if (status === 'searching') {
-    mainView = <div className={loadingMessage}>Loading...</div>
+    mainView = <div className={message}>Loading...</div>
   }
   if (status !== 'error' && books?.totalItems !== 0) {
     if (books !== undefined) {
@@ -131,7 +131,7 @@ function App(): JSX.Element {
       }
       else {
         if (items?.length === 0) {
-          mainView = <div className={loadingMessage}>Loading...</div>
+          mainView = <div className={message}>Loading...</div>
         }
         else {
           mainView = <CardGrid books={items ?? []} onClickCard={onClickCard} onClickLoadMoreButton={onClickLoadMoreButton} />
@@ -141,10 +141,10 @@ function App(): JSX.Element {
   }
   else {
     if (status === 'searching') {
-      mainView = <div className={loadingMessage}>Loading...</div>
+      mainView = <div className={message}>Loading...</div>
     }
     else {
-      mainView = <div className={errorMessage}>Oops, an error has occurred. Try turning on the VPN :)</div>
+      mainView = <div className={cx(errorMessage, message)}>Oops, an error has occurred. Try turning on the VPN :)</div>
     }
   }
   return (
@@ -169,7 +169,7 @@ function App(): JSX.Element {
             : <Button customStyles={cx(back, general)} caption={'Back'} action={() => setSelectedCardIndex(-1)} />
           }
         </Subheader>
-        {mainView}
+        {mainView || <div className={message}>Hi, let's read :)</div>}
       </div>
     </>
   )
