@@ -169,7 +169,7 @@ function App(): JSX.Element {
             : <Button customStyles={cx(back, general)} caption={'Back'} action={() => setSelectedCardIndex(-1)} />
           }
         </Subheader>
-        {mainView || <div className={message}>Hi, let's read :)</div>}
+        {mainView || <div className={message}>Hi, let's read!</div>}
       </div>
     </>
   )
