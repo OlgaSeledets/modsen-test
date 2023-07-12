@@ -51,6 +51,7 @@ function App(): JSX.Element {
       setCategory(e.target.value as Category)
       if (search !== '') {
         setStatus('searching')
+        setSelectedCardIndex(-1)
         resetSearch()
       }
     }, [search])
@@ -62,6 +63,7 @@ function App(): JSX.Element {
         if (search !== '') {
           setStatus('searching')
           setRequestText(search)
+          setSelectedCardIndex(-1)
           resetSearch()
         }
       }
